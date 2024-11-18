@@ -10,7 +10,10 @@ public class Jdbc_Example{
         Statement statement = null;
         ResultSet resultSet = null;
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+           /* Class.forName("oracle.jdbc.driver.OracleDriver");
+            * for jdbc 4.x the loading and registering the driver is automatic, so we can skip this step. 
+            */
+        	
             System.out.println("driver loaded successfully");
             String user_Name = "practice";
             String password = "1234";
@@ -30,7 +33,7 @@ public class Jdbc_Example{
             System.out.println("Id\tName\tDepartment\tSalary\tGender\tAge");
 
             while (resultSet.next()){
-                Integer id = resultSet.getInt(1);
+                Integer id = resultSet.getInt(1);  // we can give column name instead of column number as parameter. give the column number as string parameter
                 String name = resultSet.getString(2);
                 String dept = resultSet.getString(3);
                 Integer sal = resultSet.getInt(4);
@@ -41,24 +44,29 @@ public class Jdbc_Example{
 
 
         }
-        catch (ClassNotFoundException ce){
+        /* catch (ClassNotFoundException ce){
             ce.printStackTrace();
         }
+        */
         catch (SQLException s){
             s.printStackTrace();
             System.out.println("login error");
         }
-        finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                    System.out.println("connection closed");
-                }
-            }
-            catch (SQLException sq){
-                sq.printStackTrace();
-            }
-        }
-
-    }
+       
+           finally {
+        	   try {
+        		   resultSet.close();
+        		   statement.close();
+        		   connection.close();
+        		   System.out.println("connection closed");
+        	   }
+        	  catch(Exception e) {
+        		  e.printStackTrace();
+        	  }
+        	   
+           }
+            
+            
+            
+     }
 }
