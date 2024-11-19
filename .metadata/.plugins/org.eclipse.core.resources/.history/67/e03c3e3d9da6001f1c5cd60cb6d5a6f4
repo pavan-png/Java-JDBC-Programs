@@ -1,0 +1,9 @@
+
+public class Jdbc_Example_With_Prepared_Statement_Eg3 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

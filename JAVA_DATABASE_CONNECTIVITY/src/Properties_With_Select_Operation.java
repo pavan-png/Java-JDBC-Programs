@@ -27,7 +27,7 @@ public class Properties_With_Select_Operation {
 	}
 	
 	resultSet.close();
-	statement.close();
+	statement.close(); 
 	connection.close();
 	
 	}
