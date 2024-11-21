@@ -1,0 +1,14 @@
+
+public class Jdbc_Date {
+
+	public static void main(String[] args) {
+		java.util.Date uDate = new java.util.Date();
+		System.out.println(uDate);
+		
+		long date = uDate.getTime();
+		System.out.println();
+		
+
+	}
+
+}
