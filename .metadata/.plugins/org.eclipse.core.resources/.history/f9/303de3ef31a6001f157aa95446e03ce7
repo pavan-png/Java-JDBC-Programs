@@ -1,3 +1,0 @@
-url=jdbc:Oracle:thin:@localhost:1521:orcl
-userName=practice
-password="1234"
