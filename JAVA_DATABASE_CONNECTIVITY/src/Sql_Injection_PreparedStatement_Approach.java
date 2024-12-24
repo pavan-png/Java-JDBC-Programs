@@ -1,17 +1,17 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.Scanner;
 
-class Jdbc_Image_Retrival{
-	public static void main(String[] args) throws SQLException, IOException {
+public class Sql_Injection_PreparedStatement_Approach {
+
+	public static void main(String[] args) throws IOException, SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -20,33 +20,32 @@ class Jdbc_Image_Retrival{
 		Properties properties = new Properties();
 		properties.load(fis);
 		connection = DriverManager.getConnection(properties.getProperty("url"),properties.getProperty("userName"),properties.getProperty("password"));
-		
-		preparedStatement = connection.prepareStatement("select * from imageinsert");
+		Scanner sc = new Scanner(System.in);
+		preparedStatement = connection.prepareStatement("select count(*) from logindetails where username = ? and password = ? ");
+		System.out.println("enter the username");
+		String userName = sc.next();
+		System.out.println("enter the password");
+		String password = sc.next();
+		preparedStatement.setString(1, userName);
+		preparedStatement.setString(2, password);
 		resultSet = preparedStatement.executeQuery();
-		Integer id = null;
-		String name = null;
-		InputStream inputStream = null;
-		while(resultSet.next()) {
-			id = resultSet.getInt(1);
-			name = resultSet.getString(2);
-			inputStream = resultSet.getBinaryStream(3);
+		int row =0;
+		if(resultSet.next()) {
+			row = resultSet.getInt(1);
 		}
-		File f1 = new File("C:\\Users\\Administrator\\Downloads\\new\\copied.jpg");
-		FileOutputStream fos = new FileOutputStream(f1);
-		byte[] b = new byte[1024];
-		while(inputStream.read(b)>-1) {
-			fos.write(b);
-		}
-		System.out.println(id+"\t"+name+"\t"+f1.getAbsolutePath());
 		
-		inputStream.close();
-		fos.close();
+		if (row==1) {
+			System.out.println("valid crendentials ");
+		}
+		else {
+			System.out.println("invalid credentials");
+		}
+		
 		resultSet.close();
 		preparedStatement.close();
 		fis.close();
 		connection.close();
-
-		
-		
+	
 	}
+
 }

@@ -6,11 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/Downloads/new/ojdbc11.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ioutils">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ioutils"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Oraclelib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

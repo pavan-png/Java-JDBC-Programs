@@ -2,10 +2,10 @@
 <section name="Workbench">
 	<item key="org.eclipse.jdt.ui.last.selected.jre.kind2" value="0"/>
 	<item key="org.eclipse.jdt.ui.last.selected.execution.enviroment" value="JavaSE-17"/>
-	<item key="org.eclipse.jdt.ui.lastextjar" value="C:\Users\Administrator\Downloads\Compressed"/>
+	<item key="org.eclipse.jdt.ui.lastextjar" value="C:\Users\Administrator\Downloads\new"/>
 	<item key="org.eclipse.jdt.ui.last.selected.create.moduleinfo.comments" value="false"/>
 	<item key="org.eclipse.jdt.ui.last.selected.create.moduleinfo" value="false"/>
-	<item key="org.eclipse.jdt.ui.last.external.project" value="C:\Users\Administrator\devadatta"/>
+	<item key="org.eclipse.jdt.ui.last.external.project" value="C:\Users\Administrator\Downloads\Documents"/>
 	<section name="JavaProjectWizard.dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="619"/>
 		<item key="DIALOG_Y_ORIGIN" value="50"/>
@@ -74,5 +74,15 @@
 		<item key="DIALOG_WIDTH" value="700"/>
 		<item key="DIALOG_HEIGHT" value="706"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="NewPackageCreationWizard.dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="619"/>
+		<item key="DIALOG_Y_ORIGIN" value="199"/>
+		<item key="DIALOG_WIDTH" value="700"/>
+		<item key="DIALOG_HEIGHT" value="480"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="NewPackageWizardPage">
+		<item key="create_package_info_java" value="false"/>
 	</section>
 </section>

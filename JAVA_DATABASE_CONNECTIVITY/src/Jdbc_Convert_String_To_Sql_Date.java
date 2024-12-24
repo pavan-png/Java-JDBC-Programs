@@ -28,7 +28,7 @@ public class Jdbc_Convert_String_To_Sql_Date {
 		java.util.Date uDate = sdf.parse(sDob);
 		long date = uDate.getTime();
 		java.sql.Date sqlDate = new java.sql.Date(date);
-		System.out.println("enter the dom in the  format : yyyy-mm-dd ");
+		System.out.println("enter the dom in the format : yyyy-mm-dd ");
 		String sdom = sc.next();
 		java.sql.Date sqlDom = java.sql.Date.valueOf(sdom);
 		preparedStatement.setString(1,name);
