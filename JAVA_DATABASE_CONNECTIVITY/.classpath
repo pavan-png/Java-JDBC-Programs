@@ -6,7 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Oracle"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ioutils"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Oraclelib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
