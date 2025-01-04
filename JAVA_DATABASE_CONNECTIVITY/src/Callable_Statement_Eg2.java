@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class Callable_Statement_Eg2 {
 
 	public static void main(String[] args) throws SQLException {
+		
+		//mysql
 		Connection connection = null;
 		CallableStatement cstmt = null;
 		String stored_Procedure = null;
