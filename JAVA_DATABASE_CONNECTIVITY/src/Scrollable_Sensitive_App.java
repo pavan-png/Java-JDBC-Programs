@@ -16,9 +16,9 @@ public class Scrollable_Sensitive_App {
 		Properties properties = null;
 		ResultSet resultSet = null;
 		
+	
 		
-		
-		File f = new File("C:\\Users\\Administrator\\eclipse-workspace\\Java-JDBC-Programs\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
+		File f = new File("C:\\Users\\mohan\\pavan-workspace-adv-java\\Java-JDBC-Programs\\Java-JDBC-Programs\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
 		FileInputStream fis = new FileInputStream(f);
 		properties = new Properties();
 		properties.load(fis);
@@ -26,9 +26,11 @@ public class Scrollable_Sensitive_App {
 		
 		
 		 connection = DriverManager.getConnection(properties.getProperty("url"),properties.getProperty("userName"),properties.getProperty("password"));
-	//	 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql","root","2001");
-		statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-		String query = "select * from scrollableapp";
+	
+		statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+		String query = "select id,name,age,address from scrollableapp";
+		
+		// give the sql query with column names don't give * , if resultset is insensitive and updatable 
 		resultSet = statement.executeQuery(query);
 		
 		System.out.println("before inserting using refresh method");
@@ -41,6 +43,8 @@ public class Scrollable_Sensitive_App {
 		System.out.println("application is in pause state");
 		System.in.read();
 		System.out.println("records after updation");
+		
+		
 		resultSet.beforeFirst();
 		
 		System.out.println("id\tname\tage\taddress");
@@ -51,6 +55,7 @@ public class Scrollable_Sensitive_App {
 		}
 	
 	resultSet.close();
+	
 	fis.close();
 	statement.close();
 	connection.close();
