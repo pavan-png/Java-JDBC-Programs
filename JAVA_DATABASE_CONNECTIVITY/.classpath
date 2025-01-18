@@ -10,5 +10,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/oracle"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ioutils"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/csv_lib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hikaricp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
