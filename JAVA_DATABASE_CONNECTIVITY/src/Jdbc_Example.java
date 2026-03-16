@@ -1,86 +1,160 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+/*
+ * Class: JdbcExample
+ * ------------------------------------------------------------
+ * This program demonstrates the basic JDBC workflow:
+ *
+ * 1. Establish a database connection
+ * 2. Create a SQL statement
+ * 3. Execute the query
+ * 4. Process the results
+ * 5. Close all resources properly
+ *
+ * Database Used : Oracle
+ * Table Used    : employee
+ */
 
 public class Jdbc_Example {
+
+    // Database configuration (Industry practice: keep constants separate)
+    private static final String URL = "jdbc:oracle:thin:@localhost:1521:orcl";
+    private static final String USERNAME = "practice";
+    private static final String PASSWORD = "1234";
+
     public static void main(String[] args) {
 
+        // JDBC resources
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
 
         try {
-            System.out.println("Driver loaded successfully");
 
-            String userName = "practice";
-            String password = "1234";
-            String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+            /*
+             * STEP 1: Establish Database Connection
+             * ---------------------------------------
+             * DriverManager chooses the appropriate JDBC driver
+             * and returns a Connection implementation object.
+             */
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
-            // Establish connection
-            connection = DriverManager.getConnection(url, userName, password);
-            System.out.println("The implementation class for Connection is: " 
-                                + connection.getClass().getName());
+            System.out.println("Database connection established successfully.");
 
-            // Prepare query
+            // Printing implementation class (for learning purposes)
+            System.out.println("Connection Implementation Class: "
+                    + connection.getClass().getName());
+
+
+            /*
+             * STEP 2: Create SQL Statement
+             * ---------------------------------------
+             * Statement is used to send SQL queries to the database.
+             */
+            statement = connection.createStatement();
+
+            System.out.println("Statement Implementation Class: "
+                    + statement.getClass().getName());
+
+
+            /*
+             * STEP 3: Define SQL Query
+             */
             String query = "SELECT * FROM employee";
 
-            // Create statement
-            statement = connection.createStatement();
-            System.out.println("The implementation class for Statement is: " 
-                                + statement.getClass().getName());
 
-            // Execute query
+            /*
+             * STEP 4: Execute Query
+             * ---------------------------------------
+             * executeQuery() is used for SELECT operations.
+             * It returns a ResultSet object containing table data.
+             */
             resultSet = statement.executeQuery(query);
-            System.out.println("The implementation class for ResultSet is: " 
-                                + resultSet.getClass().getName());
 
-            System.out.println("Id\tName\tDepartment\tSalary\tGender\tAge");
+            System.out.println("ResultSet Implementation Class: "
+                    + resultSet.getClass().getName());
 
-            // Process result
+
+            /*
+             * STEP 5: Process ResultSet
+             * ---------------------------------------
+             * ResultSet cursor initially points before the first row.
+             * next() moves the cursor row by row.
+             */
+            System.out.println("----------------------------------------------------");
+            System.out.println("ID\tName\tDepartment\tSalary\tGender\tAge");
+            System.out.println("----------------------------------------------------");
+
             while (resultSet.next()) {
-                Integer id = resultSet.getInt(1);
-                String name = resultSet.getString(2);
-                String dept = resultSet.getString(3);
-                Integer sal = resultSet.getInt(4);
-                String gen = resultSet.getString(5);
-                Integer age = resultSet.getInt(6);
 
-                System.out.println(id + "\t" + name + "\t" + dept + "\t" + sal + "\t" + gen + "\t" + age);
+                int id = resultSet.getInt(1);
+                String name = resultSet.getString(2);
+                String department = resultSet.getString(3);
+                int salary = resultSet.getInt(4);
+                String gender = resultSet.getString(5);
+                int age = resultSet.getInt(6);
+
+                System.out.println(id + "\t" + name + "\t" + department +
+                        "\t" + salary + "\t" + gender + "\t" + age);
             }
 
-        } 
+        }
         catch (SQLException e) {
-            System.out.println("Error while executing JDBC operations.");
+
+            /*
+             * SQLException handles any database related issues
+             * such as connection failure, query error, etc.
+             */
+            System.out.println("Error occurred during JDBC operations.");
             e.printStackTrace();
-        } 
+        }
+
         finally {
 
-            // Closing ResultSet
+            /*
+             * STEP 6: Close Resources
+             * ---------------------------------------
+             * Always close JDBC resources in reverse order
+             * to prevent resource leaks.
+             *
+             * Order:
+             * ResultSet -> Statement -> Connection
+             */
+
+            // Close ResultSet
             try {
                 if (resultSet != null) {
                     resultSet.close();
+                    System.out.println("ResultSet closed successfully.");
                 }
             } catch (SQLException e) {
-                System.out.println("Error closing ResultSet");
+                System.out.println("Error closing ResultSet.");
                 e.printStackTrace();
             }
 
-            // Closing Statement
+            // Close Statement
             try {
                 if (statement != null) {
                     statement.close();
+                    System.out.println("Statement closed successfully.");
                 }
             } catch (SQLException e) {
-                System.out.println("Error closing Statement");
+                System.out.println("Error closing Statement.");
                 e.printStackTrace();
             }
 
-            // Closing Connection
+            // Close Connection
             try {
                 if (connection != null) {
                     connection.close();
+                    System.out.println("Connection closed successfully.");
                 }
-                System.out.println("Connection closed");
             } catch (SQLException e) {
-                System.out.println("Error closing Connection");
+                System.out.println("Error closing Connection.");
                 e.printStackTrace();
             }
         }

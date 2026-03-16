@@ -11,7 +11,7 @@ public class Jdbc_Example2 {
         try {
             String username = "practice";
             String password = "1234";
-            String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // corrected (oracle lowercase)
+            String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 
             // Establish connection
             connection = DriverManager.getConnection(url, username, password);
@@ -20,28 +20,23 @@ public class Jdbc_Example2 {
             // Create statement
             statement = connection.createStatement();
 
-            // Execute query
-            String query = "SELECT * FROM employee";
+            // Execute query (Selecting only 3 columns with WHERE clause)
+            String query = "SELECT Id, Name, Salary FROM employee WHERE Department = 'IT'";
             resultSet = statement.executeQuery(query);
 
             // Output header
-            System.out.println("Id\tName\tDepartment\tSalary\tGender\tAge");
+            System.out.println("Id\tName\tSalary");
 
             // Process ResultSet
             while (resultSet.next()) {
+
                 Integer id = resultSet.getInt("Id");
                 String name = resultSet.getString("Name");
-                String dept = resultSet.getString("Department");
-                Integer sal = resultSet.getInt("Salary");
-                String gen = resultSet.getString("Gender");
-                Integer age = resultSet.getInt("Age");
+                Integer salary = resultSet.getInt("Salary");
 
                 System.out.println(id + "\t" 
                                    + name + "\t" 
-                                   + dept + "\t" 
-                                   + sal + "\t" 
-                                   + gen + "\t" 
-                                   + age);
+                                   + salary);
             }
 
         } 

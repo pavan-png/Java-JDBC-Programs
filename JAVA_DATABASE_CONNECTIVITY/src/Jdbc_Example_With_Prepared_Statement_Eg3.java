@@ -11,31 +11,44 @@ public class Jdbc_Example_With_Prepared_Statement_Eg3 {
 
     public static void main(String[] args) {
 
+        // Object to store database configuration
         Properties properties = new Properties();
 
-        try (FileInputStream fis = new FileInputStream(
-                    "C:\\Users\\Administrator\\eclipse-workspace\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
-             Scanner sc = new Scanner(System.in)) {
+        try (
+            // Using relative path instead of absolute path
+            FileInputStream fis = new FileInputStream("./LoginDetails.properties");
+            Scanner sc = new Scanner(System.in)
+        ) {
 
-            // Load DB properties
+            // Load database properties from file
             properties.load(fis);
 
-            // Step 1: Connection + PreparedStatement
+            // Step 1: Create database connection
             try (Connection connection = DriverManager.getConnection(
                         properties.getProperty("url"),
                         properties.getProperty("userName"),
                         properties.getProperty("password"));
 
+                 // Step 2: Prepare SQL DELETE statement
                  PreparedStatement ps = connection.prepareStatement(
                         "DELETE FROM employee WHERE id = ?")) {
 
+                // Take employee ID from user
                 System.out.print("Enter Employee ID to delete: ");
-                int id = sc.nextInt();  // correct data type for ID
+                int id = sc.nextInt();
 
+                // Set parameter value in prepared statement
                 ps.setInt(1, id);
 
-                int rowsUpdated = ps.executeUpdate();
-                System.out.println("Number of rows deleted: " + rowsUpdated);
+                // Step 3: Execute delete query
+                int rowsDeleted = ps.executeUpdate();
+
+                // Display result
+                if (rowsDeleted > 0) {
+                    System.out.println("Employee deleted successfully.");
+                } else {
+                    System.out.println("No employee found with the given ID.");
+                }
 
             } catch (SQLException e) {
                 System.err.println("Database Error: " + e.getMessage());

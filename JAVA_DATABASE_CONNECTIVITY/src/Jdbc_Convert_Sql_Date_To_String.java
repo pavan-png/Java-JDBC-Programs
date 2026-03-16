@@ -10,39 +10,64 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Jdbc_Convert_Sql_Date_To_String {
-	public static void main(String[] args) throws IOException, SQLException {
-	Connection connection = null;
-	Scanner sc = null;
-	ResultSet resultSet = null;
-	FileInputStream fis = new FileInputStream("C:\\Users\\Administrator\\eclipse-workspace\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
-	Properties properties = new Properties();
-	properties.load(fis);
-	
-	connection = DriverManager.getConnection(properties.getProperty("url"),properties.getProperty("userName"),properties.getProperty("password"));
-	PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM datecheck WHERE name = ? ");
-	sc = new Scanner(System.in);
-	System.out.println("enter the name :");
-	String name = sc.next();
-	preparedStatement.setString(1,name);
-	resultSet = preparedStatement.executeQuery();
-	System.out.println("name \t dob \t dom");
-	while(resultSet.next()) {
-		String rName = resultSet.getString(1);
-		java.sql.Date dob  = resultSet.getDate(2);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		String  sDob = sdf.format(dob);
-		
-		java.sql.Date dom = resultSet.getDate(3);
-		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
-		String sdom = sdf1.format(dom);
-		System.out.println(name +"\t"+sDob +"\t"+sdom);
-		}
-		resultSet.close();
-		preparedStatement.close();
-		sc.close();
-		fis.close();
-		connection.close();
-	
-	}
-	
+
+    private static final String PROPERTIES_PATH = "./LoginDetails.properties";
+    private static final String SELECT_QUERY =
+            "SELECT name, dob, dom FROM datecheck WHERE name = ?";
+
+    public static void main(String[] args) {
+
+        Properties properties = new Properties();
+
+        try (
+                FileInputStream fis = new FileInputStream(PROPERTIES_PATH);
+                Scanner scanner = new Scanner(System.in)
+        ) {
+
+            // Load database properties
+            properties.load(fis);
+
+            String url = properties.getProperty("url");
+            String username = properties.getProperty("userName");
+            String password = properties.getProperty("password");
+
+            try (
+                    Connection connection = DriverManager.getConnection(url, username, password);
+                    PreparedStatement ps = connection.prepareStatement(SELECT_QUERY)
+            ) {
+
+                System.out.print("Enter the name: ");
+                String name = scanner.next();
+
+                ps.setString(1, name);
+
+                try (ResultSet resultSet = ps.executeQuery()) {
+
+                    System.out.println("NAME\tDOB\t\tDOM");
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+                    while (resultSet.next()) {
+
+                        String rName = resultSet.getString("name");
+
+                        java.sql.Date dob = resultSet.getDate("dob");
+                        String formattedDob = sdf.format(dob);
+
+                        java.sql.Date dom = resultSet.getDate("dom");
+                        String formattedDom = sdf.format(dom);
+
+                        System.out.println(rName + "\t" + formattedDob + "\t" + formattedDom);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error loading properties file.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Database operation failed.");
+            e.printStackTrace();
+        }
+    }
 }

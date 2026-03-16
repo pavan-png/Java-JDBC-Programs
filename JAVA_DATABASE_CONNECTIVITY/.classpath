@@ -11,5 +11,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ioutils"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/csv_lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hikaricp"/>
+	<classpathentry kind="lib" path="lib/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="lib/HikariCP-7.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-2.0.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -11,65 +11,72 @@ public class Properties_With_Select_Operation {
 
     public static void main(String[] args) {
 
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
-            // 1. Load properties file
-            FileInputStream fis = new FileInputStream(
-                    "C:\\Users\\Administrator\\eclipse-workspace\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
 
-            Properties properties = new Properties();
-            properties.load(fis);
+            // Step 1: Load database properties
+            Properties properties = loadProperties("LoginDetails.properties");
 
-            // 2. Establish connection using properties file
-            connection = DriverManager.getConnection(
-                    properties.getProperty("url"),
-                    properties.getProperty("userName"),
-                    properties.getProperty("password"));
+            // Step 2: Create database connection
+            try (Connection connection = createConnection(properties);
+                 Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery("SELECT * FROM employee")) {
 
-            System.out.println("✅ Connection succeeded!");
+                System.out.println("Connection established successfully.\n");
 
-            // 3. Create statement object
-            statement = connection.createStatement();
+                // Step 3: Process the result set
+                while (resultSet.next()) {
 
-            // 4. Write SQL query
-            String query = "SELECT * FROM employee";
+                    int id = resultSet.getInt(1);
+                    String name = resultSet.getString(2);
+                    String department = resultSet.getString(3);
+                    int salary = resultSet.getInt(4);
+                    String gender = resultSet.getString(5);
+                    int age = resultSet.getInt(6);
 
-            // 5. Execute query
-            resultSet = statement.executeQuery(query);
+                    // Printing employee details
+                    System.out.println(
+                            id + "\t" +
+                            name + "\t" +
+                            department + "\t" +
+                            salary + "\t" +
+                            gender + "\t" +
+                            age
+                    );
+                }
 
-            // 6. Process the result
-            while (resultSet.next()) {
-                System.out.println(
-                        resultSet.getInt(1) + "\t" +
-                        resultSet.getString(2) + "\t" +
-                        resultSet.getString(3) + "\t" +
-                        resultSet.getInt(4) + "\t" +
-                        resultSet.getString(5) + "\t" +
-                        resultSet.getString(6)
-                );
-            }
+            } // resources automatically close here
 
-        } catch (IOException e) {
-            System.out.println("❌ Error reading properties file");
+        } catch (Exception e) {
+            System.out.println("Error occurred while fetching data from database.");
             e.printStackTrace();
-
-        } catch (SQLException e) {
-            System.out.println("❌ Database error occurred");
-            e.printStackTrace();
-
-        } finally {
-            // 7. Close all resources safely
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-                if (connection != null) connection.close();
-                System.out.println("🔒 All resources closed successfully.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
+    }
+
+    /**
+     * This method loads database properties from properties file
+     */
+    private static Properties loadProperties(String filePath) throws IOException {
+
+        Properties properties = new Properties();
+
+        // try-with-resources automatically closes FileInputStream
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+
+            properties.load(fis);
+        }
+
+        return properties;
+    }
+
+    /**
+     * This method creates database connection using properties
+     */
+    private static Connection createConnection(Properties properties) throws SQLException {
+
+        String url = properties.getProperty("url");
+        String userName = properties.getProperty("userName");
+        String password = properties.getProperty("password");
+
+        return DriverManager.getConnection(url, userName, password);
     }
 }

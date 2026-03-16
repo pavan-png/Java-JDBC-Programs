@@ -9,68 +9,84 @@ import java.util.Scanner;
 
 public class Jdbc_Example_With_Prepared_Statement {
 
+    // SQL query kept as constant (industry practice)
+    private static final String INSERT_EMPLOYEE_SQL =
+            "INSERT INTO employee (id, name, department, salary, gender, age) VALUES (?, ?, ?, ?, ?, ?)";
+
     public static void main(String[] args) {
 
-        // Load credentials and database properties
+        // Properties object to load DB credentials
         Properties properties = new Properties();
 
+        // Try-with-resources for file and scanner
         try (FileInputStream fis = new FileInputStream(
-                "C:\\Users\\Administrator\\eclipse-workspace\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
-             Scanner sc = new Scanner(System.in)) {
+"C:\\Users\\Pavan\\Java-JDBC-Programs\\JAVA_DATABASE_CONNECTIVITY\\LoginDetails.properties");
+             Scanner scanner = new Scanner(System.in)) {
 
+            // Load database properties
             properties.load(fis);
 
-            // Establish connection using try-with-resources
-            try (Connection connection = DriverManager.getConnection(
-                        properties.getProperty("url"),
-                        properties.getProperty("userName"),
-                        properties.getProperty("password"));
+            // Read DB credentials from properties file
+            String url = properties.getProperty("url");
+            String user = properties.getProperty("userName");
+            String password = properties.getProperty("password");
 
-                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO employee VALUES(?,?,?,?,?,?,?)")) {
+            /*
+             * Establish database connection
+             * and create PreparedStatement
+             */
+            try (Connection connection = DriverManager.getConnection(url, user, password);
+                 PreparedStatement ps = connection.prepareStatement(INSERT_EMPLOYEE_SQL)) {
 
-                // Input section
+                // =========================
+                // Taking input from user
+                // =========================
+
                 System.out.print("Enter Employee ID: ");
-                int id = sc.nextInt();
+                int id = scanner.nextInt();
 
                 System.out.print("Enter Employee Name: ");
-                String name = sc.next();
+                String name = scanner.next();
 
                 System.out.print("Enter Department: ");
-                String department = sc.next();
+                String department = scanner.next();
 
                 System.out.print("Enter Salary: ");
-                int salary = sc.nextInt();
+                int salary = scanner.nextInt();
 
                 System.out.print("Enter Gender: ");
-                String gender = sc.next();
+                String gender = scanner.next();
 
                 System.out.print("Enter Age: ");
-                int age = sc.nextInt();
+                int age = scanner.nextInt();
 
-                System.out.print("Enter City: ");
-                String city = sc.next();
+                /*
+                 * Setting values into PreparedStatement
+                 * Each ? placeholder corresponds to index
+                 */
 
-                // Set values into PreparedStatement
                 ps.setInt(1, id);
                 ps.setString(2, name);
                 ps.setString(3, department);
                 ps.setInt(4, salary);
                 ps.setString(5, gender);
                 ps.setInt(6, age);
-                ps.setString(7, city);
 
-                // Execute update
-                int rowsUpdated = ps.executeUpdate();
-                System.out.println("No. of rows inserted: " + rowsUpdated);
+                // Execute insert query
+                int rowsInserted = ps.executeUpdate();
+
+                System.out.println("Number of rows inserted: " + rowsInserted);
 
             } catch (SQLException e) {
-                System.err.println("Database Error: " + e.getMessage());
+
+                System.err.println("Database error occurred");
                 e.printStackTrace();
             }
 
         } catch (IOException e) {
-            System.err.println("Error loading properties file: " + e.getMessage());
+
+            System.err.println("Error loading properties file");
+            e.printStackTrace();
         }
     }
 }
